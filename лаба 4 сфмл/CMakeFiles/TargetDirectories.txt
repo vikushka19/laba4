@@ -1,0 +1,3 @@
+C:/Build/лаба 4 сфмл/CMakeFiles/sfml_sample.dir
+C:/Build/лаба 4 сфмл/CMakeFiles/ALL_BUILD.dir
+C:/Build/лаба 4 сфмл/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,10 @@
+^C:\BUILD\ЛАБА 4 СФМЛ\CMAKEFILES\56312C2021A92D283D034017D0D3BB2A\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/vikag/source/repos/2 sem/4 laba" "-BC:/Build/лаба 4 сфмл" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Build/лаба 4 сфмл/sfml_sample.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
