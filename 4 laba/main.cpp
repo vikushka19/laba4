@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <chrono>
 using namespace std;
 class MyText {
 private:
@@ -29,39 +30,49 @@ public:
         srand(time(NULL));
         int startsize = displayText.getCharacterSize();
         int oldsize = startsize;
-        cout << "start: " << startsize << endl;
-        int speed = showTime / text.size();
+        //cout << "start: " << startsize << endl;
+        //ЗАПУСК СЕКУНДОМЕРА!
+        sf::Clock clock;
+        float speed = showTime / text.size();//интервал между символами
+
         for (size_t i = 0; i < text.size(); i++) {
+
             //рандомное изменение размера шрифта в диапазоне от -10 до 10 пунктов
             int changesize = (rand() % 21) - 10;
             int newsize = oldsize + changesize;
+
             //проверка диапазона
             while (changesize == 0 || newsize < startsize - 10 || newsize > startsize + 10) {
                 changesize = (rand() % 21) - 10;
                 newsize = oldsize + changesize;
             }
-            cout <<"change: "<< changesize << endl;
-            cout <<"new: " << newsize << endl;
+            //cout <<"change: "<< changesize << endl;
+            //cout <<"new: " << newsize << endl;
+
             displayText.setString(displayText.getString() + text[i]);
             displayText.setCharacterSize(newsize);
-            
+
             window.clear();
             window.draw(displayText);
             window.display();
             oldsize = newsize;
-            sf::sleep(sf::seconds(speed));
-        }
 
+            //играю со временем
+            sf::Time musttime = sf::seconds(speed * (i + 1));//должно пройти времени с учетом времени/символ
+            sf::Time elapsed = clock.getElapsedTime();//фактически прошло времени
+            if (elapsed < musttime) {//если прошло мало времени,то спим,чтобы нагнать время и дальше печатать
+                sf::sleep(musttime - elapsed);
+            }
+        }
         soundEffect.play();
-        
-        cout<<"time to show:"<< showTime;
-       
+        sf::Time vsegotime = clock.getElapsedTime();//прошло времени с момента начала вывода
+        cout << "fact show time: " << vsegotime.asSeconds() << " s" << endl;
     }
 };
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 600), "Text motion");
 
-    MyText animatedText("Hello, world! 448", 5);
+    MyText animatedText("Hi world people", 10);
     animatedText.verbAnimationText(window);
     while (window.isOpen()) {
         sf::Event event;
@@ -73,7 +84,3 @@ int main() {
     }
     return 0;
 }
-
-//ЧТО НАДО ДОБАВИТЬ/ИСПРАВИТЬ:
-//в консоль вывести фактическое время вывода строки,а не просто значение showTime
-//сделать так,чтобы строка выводилась столько времени,сколько в showTime,но с одинаковой скоростью (какой интервал между символами???)
