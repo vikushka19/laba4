@@ -33,7 +33,7 @@ public:
         //cout << "start: " << startsize << endl;
         //ЗАПУСК СЕКУНДОМЕРА!
         sf::Clock clock;
-        float speed = showTime / text.size();//интервал между символами
+        float speed = showTime / (text.size() - 1);//интервал между символами
 
         for (size_t i = 0; i < text.size(); i++) {
 
@@ -57,11 +57,13 @@ public:
             window.display();
             oldsize = newsize;
 
-            //играю со временем
             sf::Time musttime = sf::seconds(speed * (i + 1));//должно пройти времени с учетом времени/символ
             sf::Time elapsed = clock.getElapsedTime();//фактически прошло времени
-            if (elapsed < musttime) {//если прошло мало времени,то спим,чтобы нагнать время и дальше печатать
-                sf::sleep(musttime - elapsed);
+
+            if (i < text.size() - 1) {
+                if (elapsed < musttime) {//если прошло мало времени,то спим,чтобы нагнать время и дальше печатать
+                    sf::sleep(musttime - elapsed);
+                }
             }
         }
         soundEffect.play();
@@ -71,8 +73,7 @@ public:
 };
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 600), "Text motion");
-
-    MyText animatedText("Hi world people", 10);
+    MyText animatedText("world", 5);
     animatedText.verbAnimationText(window);
     while (window.isOpen()) {
         sf::Event event;
